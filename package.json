@@ -1,1 +1,29 @@
-{"name": "breaking-brake.github.io","version": "1.0.0","description": "Claude Code Workflow Studio Blog - Powered by Astro","type": "module","scripts": {"dev": "astro dev","build": "astro build","preview": "astro preview","astro": "astro"},"dependencies": {"astro": "^4.3.0","react": "^18.2.0","@astrojs/react": "^3.0.0","@astrojs/sitemap": "^3.0.0","astro-icon": "^0.8.1"},"devDependencies": {"typescript": "^5.3.0","@types/react": "^18.2.0","@types/node": "^20.0.0"}}
+{
+  "name": "breaking-brake.github.io",
+  "version": "1.0.0",
+  "description": "Claude Code Workflow Studio Blog - Powered by Astro",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "biome check .",
+    "format": "biome format --write .",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write ."
+  },
+  "dependencies": {
+    "@astrojs/react": "^3.0.0",
+    "@astrojs/sitemap": "^3.0.0",
+    "astro": "^4.3.0",
+    "astro-icon": "^0.8.1",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.2",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "typescript": "^5.3.0"
+  }
+}

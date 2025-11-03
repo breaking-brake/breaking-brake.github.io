@@ -1,31 +1,30 @@
 ---
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
 
 interface Props {
-  title: string;
-  description: string;
-  pubDate: Date;
-  author: string;
-  image?: string;
+  title: string
+  description: string
+  pubDate: Date
+  author: string
+  image?: string
 }
 
-const { title, description, pubDate, author, image } = Astro.props;
+const { title, description, pubDate, author, image } = Astro.props
 const formattedDate = new Date(pubDate).toLocaleDateString('ja-JP', {
   year: 'numeric',
   month: 'long',
-  day: 'numeric'
-});
+  day: 'numeric',
+})
 ---
-
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content={description}>
-  <title>{title} | Claude Code Workflow Studio</title>
-  <style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content={description}>
+    <title>{title}| Claude Code Workflow Studio</title>
+    <style>
     * {
       margin: 0;
       padding: 0;
@@ -33,7 +32,9 @@ const formattedDate = new Date(pubDate).toLocaleDateString('ja-JP', {
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
       line-height: 1.6;
       color: #333;
       background-color: #f9f9f9;
@@ -50,7 +51,7 @@ const formattedDate = new Date(pubDate).toLocaleDateString('ja-JP', {
       padding: 40px 20px;
       margin: 20px 0;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .article-title {
@@ -82,7 +83,7 @@ const formattedDate = new Date(pubDate).toLocaleDateString('ja-JP', {
       padding: 40px;
       margin: 20px 0;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     /* マークダウンコンテンツのスタイリング */
@@ -131,7 +132,7 @@ const formattedDate = new Date(pubDate).toLocaleDateString('ja-JP', {
       background-color: #f5f5f5;
       padding: 2px 6px;
       border-radius: 3px;
-      font-family: 'Courier New', Courier, monospace;
+      font-family: "Courier New", Courier, monospace;
       font-size: 0.9em;
       color: #e83e8c;
     }
@@ -213,30 +214,30 @@ const formattedDate = new Date(pubDate).toLocaleDateString('ja-JP', {
         font-size: 1.25rem;
       }
     }
-  </style>
-</head>
-<body>
-  <Header />
+    </style>
+  </head>
+  <body>
+    <header/>
 
-  <div class="container">
-    <article>
-      <div class="article-header">
-        <h1 class="article-title">{title}</h1>
-        <div class="article-meta">
-          <span>公開日: {formattedDate}</span>
-          <span>著者: {author}</span>
+    <div class="container">
+      <article>
+        <div class="article-header">
+          <h1 class="article-title">{title}</h1>
+          <div class="article-meta">
+            <span>公開日: {formattedDate}</span>
+            <span>著者: {author}</span>
+          </div>
+          <p style="color: #666; font-size: 1.1rem;">{description}</p>
         </div>
-        <p style="color: #666; font-size: 1.1rem;">{description}</p>
-      </div>
 
-      {image && <img src={image} alt={title} class="article-image" />}
+        {image && <img src={image} alt={title} class="article-image" />}
 
-      <div class="article-content">
-        <slot />
-      </div>
-    </article>
-  </div>
+        <div class="article-content">
+          <slot/>
+        </div>
+      </article>
+    </div>
 
-  <Footer />
-</body>
+    <footer/>
+  </body>
 </html>

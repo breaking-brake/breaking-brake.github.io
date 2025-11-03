@@ -1,25 +1,28 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import { getCollection } from 'astro:content'
 
 // ブログ記事を取得し、公開日順にソート
-const allPosts = await getCollection('blog');
-const sortedPosts = allPosts.sort((a, b) =>
-  new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
-);
-const recentPosts = sortedPosts.slice(0, 3);
+const allPosts = await getCollection('blog')
+const sortedPosts = allPosts.sort(
+  (a, b) =>
+    new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime(),
+)
+const recentPosts = sortedPosts.slice(0, 3)
 ---
-
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Claude Code Workflow Studio - AIを活用した開発ワークフローの自動化プラットフォーム">
-  <title>Claude Code Workflow Studio | ホーム</title>
-  <style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+      name="description"
+      content="Claude Code Workflow Studio - AIを活用した開発ワークフローの自動化プラットフォーム"
+    >
+    <title>Claude Code Workflow Studio | ホーム</title>
+    <style>
     * {
       margin: 0;
       padding: 0;
@@ -27,7 +30,9 @@ const recentPosts = sortedPosts.slice(0, 3);
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
       line-height: 1.6;
       color: #333;
     }
@@ -62,13 +67,15 @@ const recentPosts = sortedPosts.slice(0, 3);
       text-decoration: none;
       font-weight: 600;
       font-size: 1.1rem;
-      transition: transform 0.3s, box-shadow 0.3s;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition:
+        transform 0.3s,
+        box-shadow 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
     .cta-button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     }
 
     .container {
@@ -100,13 +107,15 @@ const recentPosts = sortedPosts.slice(0, 3);
       background: white;
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition:
+        transform 0.3s,
+        box-shadow 0.3s;
     }
 
     .feature-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 
     .feature-card h3 {
@@ -130,8 +139,10 @@ const recentPosts = sortedPosts.slice(0, 3);
       background: white;
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition:
+        transform 0.3s,
+        box-shadow 0.3s;
       text-decoration: none;
       color: inherit;
       display: block;
@@ -139,7 +150,7 @@ const recentPosts = sortedPosts.slice(0, 3);
 
     .blog-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 
     .blog-card-content {
@@ -180,47 +191,54 @@ const recentPosts = sortedPosts.slice(0, 3);
         font-size: 2rem;
       }
     }
-  </style>
-</head>
-<body>
-  <Header />
+    </style>
+  </head>
+  <body>
+    <header/>
 
-  <section class="hero">
-    <div class="container">
-      <h1>Claude Code Workflow Studio</h1>
-      <p>
-        AIを活用した開発ワークフローの自動化プラットフォーム。
-        Claude Codeと統合し、効率的な開発体験を提供します。
-      </p>
-      <a href="/about" class="cta-button">詳しく見る</a>
-    </div>
-  </section>
+    <section class="hero">
+      <div class="container">
+        <h1>Claude Code Workflow Studio</h1>
+        <p>
+          AIを活用した開発ワークフローの自動化プラットフォーム。 Claude
+          Codeと統合し、効率的な開発体験を提供します。
+        </p>
+        <a href="/about" class="cta-button">詳しく見る</a>
+      </div>
+    </section>
 
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title">主な機能</h2>
-      <div class="features">
-        <div class="feature-card">
-          <h3>AI駆動の自動化</h3>
-          <p>Claude AIを活用して、コーディング、レビュー、テストなどの開発タスクを自動化。開発者の生産性を大幅に向上させます。</p>
-        </div>
-        <div class="feature-card">
-          <h3>柔軟なワークフロー</h3>
-          <p>プロジェクトのニーズに合わせてカスタマイズ可能なワークフロー。データ分析からコードレビューまで、幅広いユースケースに対応。</p>
-        </div>
-        <div class="feature-card">
-          <h3>シームレスな統合</h3>
-          <p>既存の開発環境やツールチェーンとシームレスに統合。GitHubやCI/CDパイプラインとの連携も簡単です。</p>
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">主な機能</h2>
+        <div class="features">
+          <div class="feature-card">
+            <h3>AI駆動の自動化</h3>
+            <p>
+              Claude
+              AIを活用して、コーディング、レビュー、テストなどの開発タスクを自動化。開発者の生産性を大幅に向上させます。
+            </p>
+          </div>
+          <div class="feature-card">
+            <h3>柔軟なワークフロー</h3>
+            <p>
+              プロジェクトのニーズに合わせてカスタマイズ可能なワークフロー。データ分析からコードレビューまで、幅広いユースケースに対応。
+            </p>
+          </div>
+          <div class="feature-card">
+            <h3>シームレスな統合</h3>
+            <p>
+              既存の開発環境やツールチェーンとシームレスに統合。GitHubやCI/CDパイプラインとの連携も簡単です。
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section section-bg">
-    <div class="container">
-      <h2 class="section-title">最新の記事</h2>
-      <div class="blog-posts">
-        {recentPosts.map((post) => (
+    <section class="section section-bg">
+      <div class="container">
+        <h2 class="section-title">最新の記事</h2>
+        <div class="blog-posts">
+          {recentPosts.map((post) => (
           <a href={`/blog/${post.slug}`} class="blog-card">
             <div class="blog-card-content">
               <h3>{post.data.title}</h3>
@@ -235,17 +253,17 @@ const recentPosts = sortedPosts.slice(0, 3);
             </div>
           </a>
         ))}
-      </div>
-      {sortedPosts.length > 3 && (
+        </div>
+        {sortedPosts.length > 3 && (
         <div style="text-align: center; margin-top: 40px;">
           <a href="/blog" class="cta-button" style="background: #667eea; color: white;">
             すべての記事を見る
           </a>
         </div>
       )}
-    </div>
-  </section>
+      </div>
+    </section>
 
-  <Footer />
-</body>
+    <footer/>
+  </body>
 </html>
