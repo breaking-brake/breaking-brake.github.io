@@ -1,0 +1,256 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Claude Code Workflow Studioについて - プロジェクトの背景と目的、主な機能">
+  <title>概要 | Claude Code Workflow Studio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .page-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .page-header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .page-header p {
+      font-size: 1.25rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .content-section {
+      background: white;
+      padding: 40px;
+      margin: 40px 0;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .content-section h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #1a1a1a;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 10px;
+    }
+
+    .content-section h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      color: #2a2a2a;
+    }
+
+    .content-section p {
+      margin-bottom: 20px;
+      line-height: 1.8;
+      color: #555;
+    }
+
+    .content-section ul {
+      margin: 20px 0;
+      padding-left: 30px;
+    }
+
+    .content-section li {
+      margin-bottom: 15px;
+      line-height: 1.7;
+    }
+
+    .content-section strong {
+      color: #667eea;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin: 30px 0;
+    }
+
+    .feature-item {
+      background: #f9f9f9;
+      padding: 25px;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+    }
+
+    .feature-item h4 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+      color: #1a1a1a;
+    }
+
+    .feature-item p {
+      margin-bottom: 0;
+      color: #666;
+    }
+
+    .cta-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 50px 40px;
+      margin: 40px 0;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      border: none;
+      padding: 0;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: white;
+      color: #667eea;
+      padding: 15px 40px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      margin-top: 10px;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 768px) {
+      .page-header h1 {
+        font-size: 2rem;
+      }
+
+      .content-section {
+        padding: 25px;
+      }
+
+      .content-section h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <Header />
+
+  <div class="page-header">
+    <div class="container">
+      <h1>Claude Code Workflow Studio とは</h1>
+      <p>AI駆動の次世代開発ワークフロー自動化プラットフォーム</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <section class="content-section">
+      <h2>プロジェクトについて</h2>
+      <p>
+        Claude Code Workflow Studioは、AnthropicのClaude AIを活用した開発ワークフローの自動化プラットフォームです。
+        開発者の生産性を最大化し、より創造的なタスクに集中できる環境を提供することを目的としています。
+      </p>
+      <p>
+        現代のソフトウェア開発では、コーディング以外にも多くのタスクが存在します。
+        コードレビュー、テスト作成、ドキュメント生成、データ分析など、これらの反復的なタスクは
+        開発者の貴重な時間を消費します。Claude Code Workflow Studioは、これらのタスクを
+        AIの力で自動化・効率化することで、開発者がより本質的な問題解決に集中できるようにします。
+      </p>
+    </section>
+
+    <section class="content-section">
+      <h2>プロジェクトの背景</h2>
+      <p>
+        このプロジェクトは、以下の課題を解決するために開始されました：
+      </p>
+      <ul>
+        <li><strong>反復的タスクの自動化：</strong>毎日のように繰り返される定型的なタスクを自動化し、開発者の時間を節約</li>
+        <li><strong>コード品質の向上：</strong>AIによる一貫したコードレビューとベストプラクティスの適用</li>
+        <li><strong>ナレッジの共有：</strong>チーム全体でワークフローのノウハウを共有し、標準化を促進</li>
+        <li><strong>学習曲線の緩和：</strong>新しい技術やフレームワークの習得をAIがサポート</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>主な機能</h2>
+
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h4>AI駆動コードレビュー</h4>
+          <p>Claude AIが自動的にコードを分析し、品質向上のための提案を提供します。</p>
+        </div>
+        <div class="feature-item">
+          <h4>データ分析パイプライン</h4>
+          <p>データの収集、変換、可視化を自動化し、洞察をすばやく得られます。</p>
+        </div>
+        <div class="feature-item">
+          <h4>テスト自動生成</h4>
+          <p>コードベースを分析し、適切なユニットテストとインテグレーションテストを生成します。</p>
+        </div>
+        <div class="feature-item">
+          <h4>ドキュメント生成</h4>
+          <p>コードから自動的に技術ドキュメントを生成し、常に最新の状態を保ちます。</p>
+        </div>
+      </div>
+
+      <h3>カスタマイズ可能なワークフロー</h3>
+      <p>
+        プロジェクトのニーズに合わせて、ワークフローを柔軟にカスタマイズできます。
+        既存のCI/CDパイプラインとの統合も簡単で、GitHubやGitLabなど主要なプラットフォームに対応しています。
+      </p>
+
+      <h3>使用技術</h3>
+      <ul>
+        <li><strong>Claude AI：</strong>自然言語処理と高度な推論能力を活用</li>
+        <li><strong>Astro：</strong>高速で効率的な静的サイト生成</li>
+        <li><strong>TypeScript：</strong>型安全性と開発者体験の向上</li>
+        <li><strong>GitHub Actions：</strong>継続的インテグレーションとデプロイメント</li>
+      </ul>
+    </section>
+
+    <section class="cta-section">
+      <h2>始めてみませんか？</h2>
+      <p>クイックスタートガイドで、すぐに使い始めることができます。</p>
+      <a href="/blog/002-quick-start-tutorial" class="cta-button">クイックスタートガイドを見る</a>
+    </section>
+  </div>
+
+  <Footer />
+</body>
+</html>
