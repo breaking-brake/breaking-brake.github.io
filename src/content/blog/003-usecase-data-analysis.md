@@ -1,282 +1,357 @@
 ---
-title: "ユースケース：データ分析パイプラインの自動化"
-description: "Claude Code Workflow Studioを使ったデータ分析パイプラインの自動化方法を実例を交えて解説します。実装方法とベストプラクティスを学びましょう。"
+title: "ユースケース：データ分析ワークフローの設計"
+description: "Claude Code Workflow Studioでデータ分析ワークフローを視覚的に設計する方法を実例とともに解説します。設計のポイントとベストプラクティスを学びましょう。"
 pubDate: 2024-01-25
 author: "Data Engineering Team"
 ---
 
 ## はじめに
 
-データ駆動の意思決定が重要な現代において、データ分析パイプラインの効率化は不可欠です。このユースケースでは、Claude Code Workflow Studioを使用して、データの収集から可視化までを自動化する方法を解説します。
+データ分析作業は、収集、変換、分析、レポート生成と複数のステップを踏む複雑なプロセスです。Claude Code Workflow Studioを使えば、このような複雑なワークフローを視覚的に設計し、Claude Codeで繰り返し実行できます。
 
 ## 課題
 
-多くの開発チームが以下のような課題に直面しています：
+データアナリストが直面する典型的な課題：
 
-- **手動での繰り返し作業**: 毎日同じデータ処理タスクを手動で実行
-- **データの一貫性**: 異なる担当者が処理すると結果にばらつきが生じる
-- **処理時間の長さ**: 大量のデータを処理するのに時間がかかる
-- **エラーの発見遅延**: 問題が発生してから気づくまでに時間がかかる
+- **毎回同じ手順を繰り返す**: プロジェクトデータの週次分析など
+- **複数の選択肢**: 統計分析、可視化、機械学習など、目的に応じて処理を変更
+- **エラーが起きやすい**: 手動操作でステップを飛ばしたり、間違ったファイルを読んだり
+- **ドキュメント化されていない**: 分析手順がチームで共有されていない
 
-## ソリューション
+## ソリューション：ビジュアルワークフロー設計
 
-Claude Code Workflow Studioを使用することで、これらの課題を解決できます。
+Claude Code Workflow Studioで分析ワークフローを設計すれば：
 
-### アーキテクチャ
+- **視覚的に設計**: フロー全体を一目で把握
+- **再利用可能**: 一度設計すれば何度でも実行
+- **チーム共有**: JSONファイルで簡単に共有
+- **柔軟な分岐**: 目的に応じて処理を切り替え
 
-データ分析パイプラインは以下のステージで構成されます：
+## ワークフロー設計例
 
-1. **データ収集**: 複数のソースからデータを取得
-2. **データ検証**: データの整合性とフォーマットをチェック
-3. **データ変換**: ETL（抽出・変換・読み込み）処理
-4. **データ分析**: 統計分析と機械学習の適用
-5. **可視化とレポート**: 結果をダッシュボードで表示
+### 全体構成
 
-## 実装例
+データ分析ワークフローは以下のステップで構成します：
 
-### ステップ1: データ収集ワークフロー
-
-まず、複数のソースからデータを収集するワークフローを作成します：
-
-```yaml
-name: "日次データ収集"
-description: "各種データソースから毎日データを収集"
-trigger:
-  type: "schedule"
-  cron: "0 1 * * *"  # 毎日午前1時
-
-steps:
-  - name: "GitHub統計の取得"
-    action: "fetch_github_stats"
-    params:
-      repos:
-        - "breaking-brake/breaking-brake.github.io"
-      metrics:
-        - "commits"
-        - "pull_requests"
-        - "issues"
-      output: "data/raw/github_{{ date }}.json"
-
-  - name: "CI/CD メトリクスの取得"
-    action: "fetch_cicd_metrics"
-    params:
-      platform: "github_actions"
-      metrics:
-        - "build_time"
-        - "success_rate"
-        - "deployment_frequency"
-      output: "data/raw/cicd_{{ date }}.json"
-
-  - name: "アプリケーションログの取得"
-    action: "fetch_logs"
-    params:
-      source: "cloudwatch"
-      filter: "ERROR OR WARN"
-      time_range: "24h"
-      output: "data/raw/logs_{{ date }}.json"
+```
+[Start]
+   ↓
+[Data Collector] ← データファイル収集
+   ↓
+[Data Validator] ← データ検証
+   ↓
+[Choose Analysis Type] ← ユーザーが選択
+   ↓
+[Statistical Analysis] または [Data Visualization]
+   ↓
+[Report Generator] ← 結果をレポート化
+   ↓
+[End]
 ```
 
-### ステップ2: データ検証と変換
+### ステップ1: Data Collector（データ収集）
 
-収集したデータを検証し、分析可能な形式に変換します：
+#### ノード設定
 
-```yaml
-name: "データ変換パイプライン"
-description: "収集したデータを変換して統合"
-trigger:
-  type: "on_success"
-  workflow: "日次データ収集"
+**ノードタイプ**: Sub-Agent
 
-steps:
-  - name: "データスキーマ検証"
-    action: "validate_schema"
-    params:
-      schema_file: "schemas/analytics_schema.json"
-      data_path: "data/raw/"
-      strict: true
+**設定**：
+- **Name**: `Data Collector`
+- **Prompt**:
+```
+プロジェクトのdataディレクトリから以下のファイルを探して読み込んでください：
+- metrics.csv: 開発メトリクス
+- logs.json: アプリケーションログ
+- performance.csv: パフォーマンスデータ
 
-  - name: "データクレンジング"
-    action: "clean_data"
-    params:
-      input: "data/raw/"
-      operations:
-        - "remove_duplicates"
-        - "fill_missing_values"
-        - "normalize_dates"
-      output: "data/cleaned/"
+各ファイルの内容を確認し、データの形式と件数を報告してください。
+```
+- **Tools**: Read, Glob
+- **Model**: Sonnet
 
-  - name: "データ統合"
-    action: "merge_datasets"
-    params:
-      sources:
-        - "data/cleaned/github_*.json"
-        - "data/cleaned/cicd_*.json"
-        - "data/cleaned/logs_*.json"
-      join_key: "timestamp"
-      output: "data/processed/daily_metrics.parquet"
+#### 設計のポイント
+
+- **Tools**: ファイル検索（Glob）と読み込み（Read）のみ許可
+- **明確な指示**: 対象ファイルを具体的に指定
+- **検証**: データの形式と件数を確認させることで、次のステップでのエラーを防止
+
+### ステップ2: Data Validator（データ検証）
+
+#### ノード設定
+
+**ノードタイプ**: Sub-Agent
+
+**設定**：
+- **Name**: `Data Validator`
+- **Prompt**:
+```
+収集されたデータを検証してください：
+1. 必須カラムが存在するか確認
+2. 欠損値の割合を計算
+3. データ型が期待通りか確認
+4. 異常値や外れ値を検出
+
+問題がある場合は詳細を報告し、軽微な問題は自動修正してください。
+```
+- **Tools**: Read
+- **Model**: Sonnet
+
+#### 設計のポイント
+
+- **エラー検出**: 後続の分析で問題にならないよう事前チェック
+- **自動修正**: 軽微な問題（型変換など）は自動で対応
+- **明確なレポート**: 問題箇所を具体的に報告
+
+### ステップ3: Choose Analysis Type（分析タイプ選択）
+
+#### ノード設定
+
+**ノードタイプ**: AskUserQuestion
+
+**設定**：
+- **Question**: `どの分析を実行しますか？`
+- **Header**: `Analysis Type`
+- **Options**:
+  - **Option 1**:
+    - Label: `統計分析`
+    - Description: `平均、中央値、相関係数などの統計指標を計算`
+  - **Option 2**:
+    - Label: `データ可視化`
+    - Description: `時系列グラフやヒストグラムを生成`
+  - **Option 3**:
+    - Label: `両方実行`
+    - Description: `統計分析と可視化の両方を実行`
+
+#### 設計のポイント
+
+- **明確な選択肢**: 各選択肢の内容を詳しく説明
+- **柔軟性**: ユーザーの目的に応じて処理を切り替え
+- **複数選択対応**: `multiSelect: false`（排他的選択）
+
+### ステップ4: Statistical Analyzer（統計分析）
+
+#### ノード設定
+
+**ノードタイプ**: Sub-Agent
+
+**設定**：
+- **Name**: `Statistical Analyzer`
+- **Prompt**:
+```
+検証済みデータに対して統計分析を実行してください：
+
+1. 基本統計量
+   - 平均、中央値、標準偏差
+   - 最小値、最大値、四分位数
+
+2. 相関分析
+   - 変数間の相関係数
+   - 強い相関関係の特定
+
+3. トレンド分析
+   - 時系列データの傾向
+   - 周期性や季節性の検出
+
+4. 異常検出
+   - 外れ値の特定
+   - 異常パターンの検出
+
+結果をMarkdown形式でまとめてください。
+```
+- **Tools**: Read
+- **Model**: Opus（複雑な分析のため）
+
+#### 設計のポイント
+
+- **Opus モデル**: 高度な分析にはOpusを使用
+- **体系的な分析**: 段階的に分析項目を指定
+- **構造化された出力**: Markdown形式で読みやすく
+
+### ステップ5: Data Visualizer（データ可視化）
+
+#### ノード設定
+
+**ノードタイプ**: Sub-Agent
+
+**設定**：
+- **Name**: `Data Visualizer`
+- **Prompt**:
+```
+検証済みデータを可視化してください：
+
+1. 時系列グラフ
+   - 各メトリクスの推移
+   - 期間：過去30日間
+
+2. ヒストグラム
+   - 各変数の分布
+
+3. 散布図
+   - 変数間の関係性
+
+4. ヒートマップ
+   - 相関行列の可視化
+
+Mermaidまたはテキストベースのグラフで表現してください。
+```
+- **Tools**: Read
+- **Model**: Sonnet
+
+#### 設計のポイント
+
+- **テキストベース**: Mermaidなどテキストで表現可能な図を使用
+- **複数の視点**: 異なる種類のグラフで多角的に分析
+- **明確な期間指定**: 時系列グラフの範囲を明示
+
+### ステップ6: Report Generator（レポート生成）
+
+#### ノード設定
+
+**ノードタイプ**: Sub-Agent
+
+**設定**：
+- **Name**: `Report Generator`
+- **Prompt**:
+```
+分析結果を統合して最終レポートを作成してください：
+
+## データ分析レポート
+### 実行日時: {{timestamp}}
+
+### 1. データ概要
+- 収集したデータの概要
+- データ品質の評価
+
+### 2. 分析結果
+- 統計分析の結果（実行された場合）
+- 可視化の結果（実行された場合）
+
+### 3. 主要な発見事項
+- 重要なインサイト（3-5項目）
+- 注意すべき異常値やトレンド
+
+### 4. 推奨アクション
+- 分析結果に基づく具体的な推奨事項
+
+レポートはreports/ディレクトリに保存してください。
+```
+- **Tools**: Read, Write
+- **Model**: Sonnet
+
+#### 設計のポイント
+
+- **Write権限**: レポートファイルを保存するため
+- **構造化**: 見やすいレポート構成
+- **アクショナブル**: 推奨事項を含める
+
+## ノードの接続
+
+### 基本フロー
+
+```
+Data Collector → Data Validator → Choose Analysis Type
 ```
 
-### ステップ3: データ分析
+### 分岐処理
 
-Claude AIを活用して、データから洞察を抽出します：
-
-```yaml
-name: "AI駆動データ分析"
-description: "Claude AIを使用して高度な分析を実行"
-trigger:
-  type: "on_success"
-  workflow: "データ変換パイプライン"
-
-steps:
-  - name: "トレンド分析"
-    action: "ai_analyze_trends"
-    params:
-      data: "data/processed/daily_metrics.parquet"
-      analysis_type: "time_series"
-      claude_prompt: |
-        以下のメトリクスデータを分析し、
-        重要なトレンドや異常値を特定してください：
-        - コミット数の推移
-        - ビルド成功率の変化
-        - エラーログの頻度
-      output: "analysis/trends_{{ date }}.md"
-
-  - name: "相関分析"
-    action: "ai_correlation_analysis"
-    params:
-      data: "data/processed/daily_metrics.parquet"
-      variables:
-        - "commit_count"
-        - "build_success_rate"
-        - "error_count"
-      claude_prompt: |
-        変数間の相関関係を分析し、
-        開発生産性に影響を与える要因を特定してください
-      output: "analysis/correlation_{{ date }}.md"
-
-  - name: "予測モデリング"
-    action: "ai_predict"
-    params:
-      data: "data/processed/daily_metrics.parquet"
-      target: "build_success_rate"
-      horizon: "7_days"
-      output: "analysis/predictions_{{ date }}.json"
+**「統計分析」選択時**:
+```
+Choose Analysis Type → Statistical Analyzer → Report Generator
 ```
 
-### ステップ4: 可視化とレポート
-
-分析結果を可視化し、レポートを生成します：
-
-```yaml
-name: "レポート生成"
-description: "分析結果をダッシュボードとレポートで可視化"
-trigger:
-  type: "on_success"
-  workflow: "AI駆動データ分析"
-
-steps:
-  - name: "ダッシュボードの更新"
-    action: "update_dashboard"
-    params:
-      platform: "grafana"
-      datasource: "data/processed/daily_metrics.parquet"
-      dashboard_id: "dev_metrics"
-
-  - name: "週次レポートの生成"
-    action: "generate_report"
-    params:
-      template: "templates/weekly_report.md"
-      data_sources:
-        - "analysis/trends_*.md"
-        - "analysis/correlation_*.md"
-        - "analysis/predictions_*.json"
-      output: "reports/weekly_{{ week }}.pdf"
-
-  - name: "レポート配信"
-    action: "send_notification"
-    params:
-      channel: "email"
-      recipients:
-        - "engineering-team@example.com"
-      subject: "週次開発メトリクスレポート"
-      attachment: "reports/weekly_{{ week }}.pdf"
+**「データ可視化」選択時**:
 ```
+Choose Analysis Type → Data Visualizer → Report Generator
+```
+
+**「両方実行」選択時**:
+両方のノードを実行後、Report Generatorへ（Branchノードで制御）
+
+## 保存とエクスポート
+
+### 保存
+
+1. ワークフロー名を入力: `data-analysis-pipeline`
+2. **Save** ボタンをクリック
+3. `.vscode/workflows/data-analysis-pipeline.json` に保存
+
+### エクスポート
+
+1. **Export** ボタンをクリック
+2. 生成されるファイル：
+   - `.claude/agents/Data_Collector.md`
+   - `.claude/agents/Data_Validator.md`
+   - `.claude/agents/Statistical_Analyzer.md`
+   - `.claude/agents/Data_Visualizer.md`
+   - `.claude/agents/Report_Generator.md`
+   - `.claude/commands/data-analysis-pipeline.md`
+
+## 実行方法
+
+Claude Codeで以下のコマンドを実行：
+
+```
+/data-analysis-pipeline
+```
+
+ワークフローが起動し、各ステップが順番に実行されます。
 
 ## ベストプラクティス
 
-### 1. エラーハンドリング
+### 1. エラーハンドリングの設計
 
-各ステップでエラーハンドリングを実装します：
+データが見つからない場合の処理を考慮：
 
-```yaml
-steps:
-  - name: "データ収集"
-    action: "fetch_data"
-    params:
-      source: "api"
-    on_error:
-      action: "notify_error"
-      params:
-        channel: "slack"
-        message: "データ収集に失敗しました"
-    retry:
-      max_attempts: 3
-      backoff: "exponential"
+- Data Collectorで「ファイルが見つからない場合はユーザーに報告」と明記
+- Branchノードでファイル存在チェックを挟む
+
+### 2. モデルの使い分け
+
+- **Haiku**: 簡単なデータ収集や検証
+- **Sonnet**: 標準的な分析やレポート生成
+- **Opus**: 複雑な統計分析や予測
+
+### 3. プロンプトの明確化
+
+良い例：
+```
+dataディレクトリ内の全CSVファイルを読み込み、
+各ファイルの行数とカラム名を報告してください。
 ```
 
-### 2. データバージョニング
-
-データの変更履歴を追跡します：
-
-```yaml
-steps:
-  - name: "データ保存"
-    action: "save_data"
-    params:
-      path: "data/versioned/{{ version }}/metrics.parquet"
-      metadata:
-        source: "{{ workflow_name }}"
-        timestamp: "{{ execution_time }}"
-        schema_version: "v2.1"
+悪い例：
+```
+データを読んで分析してください。
 ```
 
-### 3. パフォーマンス最適化
+### 4. ツール権限の最小化
 
-大量データの処理には並列実行を活用します：
+各ノードには必要最小限のツールのみ付与：
+- Data Collector: Read, Glob のみ
+- Report Generator: Read, Write のみ
 
-```yaml
-steps:
-  - name: "並列データ処理"
-    action: "parallel_process"
-    params:
-      data_chunks: "data/raw/*.json"
-      worker_count: 4
-      operation: "transform_data"
-```
+## 応用例
 
-## 効果測定
+### 週次レポート自動生成
 
-このパイプラインを導入したチームでは、以下の効果が確認されています：
+設計したワークフローに「スケジュール実行」を追加すれば、毎週自動でレポート生成が可能になります（Claude Code の機能と組み合わせ）。
 
-### 時間の節約
+### A/Bテスト分析
 
-- **以前**: 手動で毎日2時間のデータ処理作業
-- **導入後**: 完全自動化により0時間に短縮
-- **年間節約時間**: 約500時間
+「Choose Analysis Type」の代わりに「Choose Test Group」ノードを追加し、グループ別の分析フローを設計できます。
 
-### 品質の向上
+### 異常検知アラート
 
-- **データエラー率**: 15% → 2%に減少
-- **レポート作成時間**: 4時間 → 15分に短縮
-- **洞察の発見速度**: 週次 → 日次に改善
-
-### コストの削減
-
-- 人件費の削減により年間約300万円のコスト削減
-- インフラの最適化により月額約10万円の節約
+Report Generatorの後に「Alert Checker」ノードを追加し、特定の閾値を超えた場合に通知を送信することも可能です。
 
 ## まとめ
 
-Claude Code Workflow Studioを使用することで、複雑なデータ分析パイプラインを簡単に自動化できます。AIの力を借りることで、単なる処理の自動化だけでなく、より深い洞察の獲得も可能になります。
+Claude Code Workflow Studioを使えば、複雑なデータ分析ワークフローを視覚的に設計できます。
 
-次は、[AI を活用したコードレビューワークフロー](/blog/004-usecase-code-review)の実例をご覧ください。
+**覚えておくべきポイント**：
+- ✅ 段階的にステップを分割
+- ✅ ユーザー選択で柔軟な分岐
+- ✅ 各ノードに明確なプロンプトを設定
+- ✅ ツール権限は必要最小限に
+
+次は、[コードレビューワークフローの設計](/blog/004-usecase-code-review)で別のユースケースを見てみましょう。

@@ -1,240 +1,280 @@
 ---
 title: "クイックスタートガイド"
-description: "Claude Code Workflow Studioのインストールから基本的な使い方、サンプルワークフローの実行まで、ステップバイステップで解説します。"
+description: "Claude Code Workflow Studioのインストールから基本的な使い方、最初のワークフロー作成とエクスポートまで、ステップバイステップで解説します。"
 pubDate: 2024-01-20
 author: "Claude Code Team"
 ---
 
 ## はじめに
 
-このガイドでは、Claude Code Workflow Studioをゼロから始めて、最初のワークフローを実行するまでの手順を解説します。約10分で基本的な使い方を習得できます。
+このガイドでは、Claude Code Workflow Studioをインストールして、最初のワークフローを作成・エクスポートするまでの手順を解説します。約10分で基本的な使い方を習得できます。
 
 ## 前提条件
 
-以下のツールがインストールされている必要があります：
+以下が必要です：
 
-- **Node.js**: v18.0.0 以上
-- **npm**: v9.0.0 以上（Node.jsに同梱）
-- **Git**: バージョン管理用
-- **Claude API キー**: Anthropicから取得（[Console](https://console.anthropic.com/)で登録）
+- **VSCode**: Visual Studio Code（最新版推奨）
+- **Claude Code**: Anthropicの公式CLIツール
+
+Claude Codeのインストール方法は、[公式ドキュメント](https://docs.anthropic.com/claude/docs/claude-code)をご覧ください。
 
 ## インストール手順
 
-### 1. リポジトリのクローン
+### 方法1: VSCode Marketplace から（推奨・Coming Soon）
 
-まず、GitHubからリポジトリをクローンします：
+1. VSCode を開く
+2. 拡張機能ビュー（`Ctrl+Shift+X` / `Cmd+Shift+X`）を開く
+3. "Claude Code Workflow Studio" を検索
+4. **Install** をクリック
 
-```bash
-git clone https://github.com/breaking-brake/breaking-brake.github.io.git
-cd breaking-brake.github.io
-```
+### 方法2: ソースから
 
-### 2. 依存関係のインストール
-
-プロジェクトディレクトリで以下のコマンドを実行します：
-
-```bash
-npm install
-```
-
-このコマンドにより、必要なすべてのパッケージがインストールされます。
-
-### 3. 環境変数の設定
-
-プロジェクトのルートディレクトリに `.env` ファイルを作成し、以下の内容を追加します：
-
-```bash
-ANTHROPIC_API_KEY=your_api_key_here
-```
-
-`your_api_key_here` を、Anthropic Consoleで取得したAPIキーに置き換えてください。
-
-### 4. 開発サーバーの起動
-
-以下のコマンドで開発サーバーを起動します：
-
-```bash
-npm run dev
-```
-
-ブラウザで `http://localhost:4321` を開くと、サイトが表示されます。
+現在はプライベートリポジトリのため、ソースからのインストールは利用できません。Marketplace公開をお待ちください。
 
 ## 基本的な使い方
 
-### ワークフローの基本構造
+### ステップ1: エディタを開く
 
-Claude Code Workflow Studioのワークフローは、YAML形式で定義します。基本的な構造は以下の通りです：
+1. VSCode でコマンドパレットを開く（`Ctrl+Shift+P` / `Cmd+Shift+P`）
+2. "Claude Code Workflow Studio: Open Editor" と入力
+3. Enterキーを押す
 
-```yaml
-name: "サンプルワークフロー"
-description: "簡単な自動化ワークフローの例"
-trigger:
-  type: "manual"
-steps:
-  - name: "コード分析"
-    action: "analyze_code"
-    params:
-      path: "src/"
-  - name: "レポート生成"
-    action: "generate_report"
-    params:
-      format: "markdown"
+ビジュアルエディタが新しいタブで開きます。
+
+### ステップ2: 最初のワークフローを作成
+
+簡単なコードレビューワークフローを作成してみましょう。
+
+#### 2-1. Sub-Agentノードを追加
+
+1. 左側のノードパレットから **Sub-Agent** をクリック
+2. キャンバスにノードが配置されます
+3. ノードをクリックして右側のプロパティパネルで設定：
+   - **Name**: "Code Reviewer"
+   - **Prompt**: "コードを読み、品質、セキュリティ、パフォーマンスの観点からレビューしてください"
+   - **Tools**: Read, Grep をチェック
+   - **Model**: Sonnet（デフォルト）
+
+#### 2-2. AskUserQuestionノードを追加
+
+1. ノードパレットから **AskUserQuestion** をクリック
+2. プロパティパネルで設定：
+   - **Question**: "レビュー結果をどうしますか？"
+   - **Header**: "Next Action"
+   - **Options**:
+     - Option 1: Label "修正する", Description "指摘された問題を修正"
+     - Option 2: Label "保存のみ", Description "レビュー結果を保存して終了"
+
+#### 2-3. ノードを接続
+
+1. "Code Reviewer" ノードの右側（出力ポート）をクリック
+2. "Next Action" ノードの左側（入力ポート）までドラッグ
+3. 接続が作成されます
+
+### ステップ3: ワークフローを保存
+
+1. 上部ツールバーのテキストボックスにワークフロー名を入力
+   - 例: "code-review-workflow"
+2. **Save** ボタンをクリック
+3. `.vscode/workflows/code-review-workflow.json` に保存されます
+
+### ステップ4: エクスポート
+
+1. **Export** ボタンをクリック
+2. 確認ダイアログが表示されます
+3. **OK** をクリック
+
+以下のファイルが生成されます：
+
+- `.claude/agents/Code_Reviewer.md` - Sub-Agent定義
+- `.claude/commands/code-review-workflow.md` - SlashCommand
+
+### ステップ5: Claude Code で実行
+
+エクスポートしたワークフローを実行してみましょう：
+
+1. VSCode のターミナルを開く
+2. Claude Code を起動
+3. スラッシュコマンドを入力：
+
+```
+/code-review-workflow
 ```
 
-### ワークフローの作成
+4. ワークフローが実行されます！
 
-プロジェクトの `.claude/workflows` ディレクトリに新しいワークフローファイルを作成します：
+## 各ノードタイプの使い方
+
+### Sub-Agent ノード
+
+Claude Code のサブエージェントを定義します。
+
+**設定項目**：
+- **Name**: エージェントの名前（ファイル名になります）
+- **Prompt**: エージェントの振る舞いを記述
+- **Tools**: 使用可能なツール（Read, Write, Bash など）
+- **Model**: 使用するモデル（Sonnet/Opus/Haiku）
+
+**使用例**：
+- コードレビュー専用エージェント
+- データ分析エージェント
+- ドキュメント生成エージェント
+
+### AskUserQuestion ノード
+
+ユーザーに選択肢を提示し、条件分岐を作成します。
+
+**設定項目**：
+- **Question**: ユーザーへの質問
+- **Header**: 短いラベル（12文字以内）
+- **Options**: 2〜4個の選択肢
+- **Multi Select**: 複数選択を許可するか
+
+**使用例**：
+- 処理方法の選択
+- 優先度の設定
+- フォーマットの選択
+
+### Prompt ノード
+
+再利用可能なプロンプトテンプレートを定義します。
+
+**設定項目**：
+- **Name**: プロンプトの名前
+- **Template**: テンプレート本文（`{{variable}}` で変数使用可能）
+
+**使用例**：
+- コードレビューテンプレート
+- レポート生成テンプレート
+- 質問応答テンプレート
+
+### Branch ノード
+
+条件に基づいて処理を分岐します。
+
+**モード**：
+- **Conditional**: True/False の2方向分岐
+- **Switch**: 2〜N個の多方向分岐
+
+**使用例**：
+- ファイルの存在チェック
+- エラーハンドリング
+- 処理結果による分岐
+
+## 実践例：データ分析ワークフロー
+
+より実践的な例として、データ分析ワークフローを作成してみましょう：
+
+### フロー構成
+
+1. **Data Collector** (Sub-Agent)
+   - データファイルを収集
+   - Tools: Read, Glob
+
+2. **Choose Analysis** (AskUserQuestion)
+   - 統計分析 or 可視化を選択
+
+3. **Statistical Analyzer** (Sub-Agent)
+   - 統計分析を実行（統計分析選択時）
+
+4. **Data Visualizer** (Sub-Agent)
+   - グラフを生成（可視化選択時）
+
+5. **Report Generator** (Sub-Agent)
+   - 最終レポートを作成
+   - Tools: Write
+
+### 作成手順
+
+1. 各Sub-Agentノードを配置
+2. AskUserQuestionノードを配置
+3. ノードを接続：
+   - Data Collector → Choose Analysis
+   - Choose Analysis → Statistical Analyzer（統計分析選択時）
+   - Choose Analysis → Data Visualizer（可視化選択時）
+   - Statistical Analyzer → Report Generator
+   - Data Visualizer → Report Generator
+
+4. ワークフロー名を入力：`data-analysis`
+5. Save → Export
+
+これで `/data-analysis` コマンドで実行できます！
+
+## ワークフローの管理
+
+### 保存したワークフローを読み込む
+
+1. ツールバーの **Load** ドロップダウンをクリック
+2. `.vscode/workflows/` 内のファイル一覧が表示されます
+3. 読み込みたいワークフローを選択
+
+### ワークフローを更新する
+
+1. ワークフローを読み込む
+2. ノードを編集
+3. 同じ名前で **Save** をクリック
+4. 上書き保存されます
+
+### ワークフローをバージョン管理
+
+`.vscode/workflows/*.json` ファイルは Git で管理できます：
 
 ```bash
-mkdir -p .claude/workflows
-touch .claude/workflows/my-first-workflow.yml
+git add .vscode/workflows/
+git commit -m "Add code review workflow"
 ```
 
-### サンプルワークフローの実行
-
-最初のワークフローとして、簡単なコードレビューワークフローを作成しましょう。
-
-`.claude/workflows/code-review.yml` を作成し、以下の内容を記述します：
-
-```yaml
-name: "自動コードレビュー"
-description: "変更されたファイルを自動的にレビューします"
-trigger:
-  type: "on_push"
-  branch: "main"
-steps:
-  - name: "変更ファイルの取得"
-    action: "get_changed_files"
-
-  - name: "コードレビューの実行"
-    action: "ai_code_review"
-    params:
-      style: "constructive"
-      focus:
-        - "security"
-        - "performance"
-        - "readability"
-
-  - name: "レビュー結果の保存"
-    action: "save_review"
-    params:
-      output: "reviews/review-{{ timestamp }}.md"
-```
-
-### ワークフローの実行
-
-ワークフローを実行するには、以下のコマンドを使用します：
-
-```bash
-npm run workflow:run -- code-review
-```
-
-実行結果はコンソールに表示され、生成されたレポートは指定されたパスに保存されます。
-
-## 主要なアクション
-
-Claude Code Workflow Studioには、以下のような組み込みアクションが用意されています：
-
-### コード分析系
-
-- **analyze_code**: コードの静的解析
-- **ai_code_review**: AIによるコードレビュー
-- **find_bugs**: バグの自動検出
-- **suggest_improvements**: 改善提案の生成
-
-### テスト系
-
-- **generate_tests**: テストケースの自動生成
-- **run_tests**: テストの実行
-- **coverage_report**: カバレッジレポートの生成
-
-### ドキュメント系
-
-- **generate_docs**: ドキュメントの自動生成
-- **update_readme**: README の自動更新
-- **create_changelog**: 変更履歴の作成
-
-### データ処理系
-
-- **extract_data**: データの抽出
-- **transform_data**: データの変換
-- **visualize_data**: データの可視化
-
-## 実践例：毎日のコードチェック
-
-実務でよく使われるパターンとして、毎日定時にコードチェックを実行するワークフローを作成してみましょう：
-
-```yaml
-name: "毎日のコードヘルスチェック"
-description: "コードベースの健全性を毎日チェック"
-trigger:
-  type: "schedule"
-  cron: "0 9 * * *"  # 毎日午前9時に実行
-steps:
-  - name: "最新コードの取得"
-    action: "git_pull"
-
-  - name: "コード品質分析"
-    action: "analyze_code"
-    params:
-      path: "src/"
-      metrics:
-        - "complexity"
-        - "duplication"
-        - "maintainability"
-
-  - name: "セキュリティスキャン"
-    action: "security_scan"
-    params:
-      severity: "medium"
-
-  - name: "テストカバレッジ確認"
-    action: "coverage_report"
-    params:
-      threshold: 80
-
-  - name: "レポート送信"
-    action: "send_notification"
-    params:
-      channel: "slack"
-      message: "本日のコードヘルスレポートが完成しました"
-```
+チームメンバーと共有する場合も、このファイルをリポジトリに含めるだけです。
 
 ## トラブルシューティング
 
-### よくある問題と解決方法
+### ワークフローが保存できない
 
-**問題1: APIキーが認識されない**
+**原因**：ワークフロー名に使用できない文字が含まれている
 
-解決方法：
-- `.env` ファイルが正しい場所にあるか確認
-- APIキーが正しくコピーされているか確認
-- 開発サーバーを再起動
+**解決方法**：
+- 英数字、ハイフン、アンダースコアのみ使用
+- スペースや特殊文字は避ける
 
-**問題2: ワークフローが実行されない**
+### エクスポートに失敗する
 
-解決方法：
-- YAML のシンタックスエラーをチェック
-- ログファイル（`.claude/logs/`）を確認
-- トリガー設定が正しいか確認
+**原因**：ノードの設定が不完全
 
-**問題3: 依存関係のインストールエラー**
+**解決方法**：
+- すべてのノードに名前が設定されているか確認
+- 必須フィールドが入力されているか確認
+- エラーメッセージをVSCode通知で確認
 
-解決方法：
-- Node.js のバージョンを確認
-- `node_modules` を削除して再インストール
-- npm のキャッシュをクリア：`npm cache clean --force`
+### ワークフローリストが更新されない
+
+**解決方法**：
+- Load ドロップダウンの更新ボタン（↻）をクリック
+- エディタを閉じて再度開く
+
+### Claude Code でコマンドが認識されない
+
+**原因**：エクスポート後、Claude Code を再起動していない
+
+**解決方法**：
+- Claude Code を一度終了
+- 再度起動すると新しいコマンドが認識されます
 
 ## 次のステップ
 
-基本的な使い方を理解したら、以下の記事で実践的な活用方法を学びましょう：
+基本的な使い方を理解したら、実践的なユースケースを学びましょう：
 
-1. [データ分析パイプラインの自動化](/blog/003-usecase-data-analysis)
-2. [AI を活用したコードレビューワークフロー](/blog/004-usecase-code-review)
+1. [データ分析ワークフローの設計](/blog/003-usecase-data-analysis)
+2. [コードレビューワークフローの設計](/blog/004-usecase-code-review)
 3. [よくある質問と回答](/blog/005-faq)
 
 ## まとめ
 
-このクイックスタートガイドでは、インストールから基本的なワークフローの作成・実行まで学びました。Claude Code Workflow Studioは、シンプルながら強力な自動化ツールです。
+Claude Code Workflow Studioを使えば、プログラミング不要でClaude Codeのワークフローを視覚的に設計できます。
+
+**覚えておくべきポイント**：
+- ✅ ドラッグ&ドロップで直感的に設計
+- ✅ JSON形式で保存し、Gitで管理
+- ✅ エクスポートしてすぐにClaude Codeで実行
+- ✅ チームでワークフローを共有可能
 
 ぜひ様々なワークフローを試して、自分のプロジェクトに最適な自動化を見つけてください！
