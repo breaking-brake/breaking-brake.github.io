@@ -1,280 +1,280 @@
 ---
-title: "クイックスタートガイド"
-description: "Claude Code Workflow Studioのインストールから基本的な使い方、最初のワークフロー作成とエクスポートまで、ステップバイステップで解説します。"
-pubDate: 2024-01-20
-author: "Claude Code Team"
+title: "Quick Start Guide"
+description: "Step-by-step guide from installing Claude Code Workflow Studio to basic usage, creating your first workflow, and exporting it."
+pubDate: 2025-11-04
+author: "breaking-brake"
 ---
 
-## はじめに
+## Introduction
 
-このガイドでは、Claude Code Workflow Studioをインストールして、最初のワークフローを作成・エクスポートするまでの手順を解説します。約10分で基本的な使い方を習得できます。
+This guide explains how to install Claude Code Workflow Studio, create your first workflow, and export it. You'll master the basics in about 10 minutes.
 
-## 前提条件
+## Prerequisites
 
-以下が必要です：
+You'll need:
 
-- **VSCode**: Visual Studio Code（最新版推奨）
-- **Claude Code**: Anthropicの公式CLIツール
+- **VSCode**: Visual Studio Code (latest version recommended)
+- **Claude Code**: Anthropic's official CLI tool
 
-Claude Codeのインストール方法は、[公式ドキュメント](https://docs.anthropic.com/claude/docs/claude-code)をご覧ください。
+For Claude Code installation instructions, see the [official documentation](https://docs.anthropic.com/claude/docs/claude-code).
 
-## インストール手順
+## Installation Steps
 
-### 方法1: VSCode Marketplace から（推奨・Coming Soon）
+### Method 1: From VSCode Marketplace (Recommended・Coming Soon)
 
-1. VSCode を開く
-2. 拡張機能ビュー（`Ctrl+Shift+X` / `Cmd+Shift+X`）を開く
-3. "Claude Code Workflow Studio" を検索
-4. **Install** をクリック
+1. Open VSCode
+2. Open Extensions view (`Ctrl+Shift+X` / `Cmd+Shift+X`)
+3. Search for "Claude Code Workflow Studio"
+4. Click **Install**
 
-### 方法2: ソースから
+### Method 2: From Source
 
-現在はプライベートリポジトリのため、ソースからのインストールは利用できません。Marketplace公開をお待ちください。
+Currently unavailable as it's a private repository. Please wait for Marketplace publication.
 
-## 基本的な使い方
+## Basic Usage
 
-### ステップ1: エディタを開く
+### Step 1: Open the Editor
 
-1. VSCode でコマンドパレットを開く（`Ctrl+Shift+P` / `Cmd+Shift+P`）
-2. "Claude Code Workflow Studio: Open Editor" と入力
-3. Enterキーを押す
+1. Open the VSCode Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
+2. Type "Claude Code Workflow Studio: Open Editor"
+3. Press Enter
 
-ビジュアルエディタが新しいタブで開きます。
+The visual editor opens in a new tab.
 
-### ステップ2: 最初のワークフローを作成
+### Step 2: Create Your First Workflow
 
-簡単なコードレビューワークフローを作成してみましょう。
+Let's create a simple code review workflow.
 
-#### 2-1. Sub-Agentノードを追加
+#### 2-1. Add a Sub-Agent Node
 
-1. 左側のノードパレットから **Sub-Agent** をクリック
-2. キャンバスにノードが配置されます
-3. ノードをクリックして右側のプロパティパネルで設定：
+1. Click **Sub-Agent** in the left node palette
+2. The node is placed on the canvas
+3. Click the node and configure in the right property panel:
    - **Name**: "Code Reviewer"
-   - **Prompt**: "コードを読み、品質、セキュリティ、パフォーマンスの観点からレビューしてください"
-   - **Tools**: Read, Grep をチェック
-   - **Model**: Sonnet（デフォルト）
+   - **Prompt**: "Review the code from quality, security, and performance perspectives"
+   - **Tools**: Check Read, Grep
+   - **Model**: Sonnet (default)
 
-#### 2-2. AskUserQuestionノードを追加
+#### 2-2. Add an AskUserQuestion Node
 
-1. ノードパレットから **AskUserQuestion** をクリック
-2. プロパティパネルで設定：
-   - **Question**: "レビュー結果をどうしますか？"
+1. Click **AskUserQuestion** in the node palette
+2. Configure in the property panel:
+   - **Question**: "What would you like to do with the review results?"
    - **Header**: "Next Action"
    - **Options**:
-     - Option 1: Label "修正する", Description "指摘された問題を修正"
-     - Option 2: Label "保存のみ", Description "レビュー結果を保存して終了"
+     - Option 1: Label "Fix Issues", Description "Fix the identified problems"
+     - Option 2: Label "Save Only", Description "Save review results and exit"
 
-#### 2-3. ノードを接続
+#### 2-3. Connect Nodes
 
-1. "Code Reviewer" ノードの右側（出力ポート）をクリック
-2. "Next Action" ノードの左側（入力ポート）までドラッグ
-3. 接続が作成されます
+1. Click the right side (output port) of the "Code Reviewer" node
+2. Drag to the left side (input port) of the "Next Action" node
+3. Connection is created
 
-### ステップ3: ワークフローを保存
+### Step 3: Save the Workflow
 
-1. 上部ツールバーのテキストボックスにワークフロー名を入力
-   - 例: "code-review-workflow"
-2. **Save** ボタンをクリック
-3. `.vscode/workflows/code-review-workflow.json` に保存されます
+1. Enter a workflow name in the text box at the top toolbar
+   - Example: "code-review-workflow"
+2. Click the **Save** button
+3. Saved to `.vscode/workflows/code-review-workflow.json`
 
-### ステップ4: エクスポート
+### Step 4: Export
 
-1. **Export** ボタンをクリック
-2. 確認ダイアログが表示されます
-3. **OK** をクリック
+1. Click the **Export** button
+2. A confirmation dialog appears
+3. Click **OK**
 
-以下のファイルが生成されます：
+The following files are generated:
 
-- `.claude/agents/Code_Reviewer.md` - Sub-Agent定義
+- `.claude/agents/Code_Reviewer.md` - Sub-Agent definition
 - `.claude/commands/code-review-workflow.md` - SlashCommand
 
-### ステップ5: Claude Code で実行
+### Step 5: Run in Claude Code
 
-エクスポートしたワークフローを実行してみましょう：
+Let's run the exported workflow:
 
-1. VSCode のターミナルを開く
-2. Claude Code を起動
-3. スラッシュコマンドを入力：
+1. Open VSCode terminal
+2. Launch Claude Code
+3. Enter the slash command:
 
 ```
 /code-review-workflow
 ```
 
-4. ワークフローが実行されます！
+4. The workflow executes!
 
-## 各ノードタイプの使い方
+## Using Each Node Type
 
-### Sub-Agent ノード
+### Sub-Agent Node
 
-Claude Code のサブエージェントを定義します。
+Defines a Claude Code sub-agent.
 
-**設定項目**：
-- **Name**: エージェントの名前（ファイル名になります）
-- **Prompt**: エージェントの振る舞いを記述
-- **Tools**: 使用可能なツール（Read, Write, Bash など）
-- **Model**: 使用するモデル（Sonnet/Opus/Haiku）
+**Configuration Items**:
+- **Name**: Agent name (becomes the filename)
+- **Prompt**: Describe the agent's behavior
+- **Tools**: Available tools (Read, Write, Bash, etc.)
+- **Model**: Model to use (Sonnet/Opus/Haiku)
 
-**使用例**：
-- コードレビュー専用エージェント
-- データ分析エージェント
-- ドキュメント生成エージェント
+**Usage Examples**:
+- Dedicated code review agent
+- Data analysis agent
+- Documentation generation agent
 
-### AskUserQuestion ノード
+### AskUserQuestion Node
 
-ユーザーに選択肢を提示し、条件分岐を作成します。
+Presents choices to the user and creates conditional branches.
 
-**設定項目**：
-- **Question**: ユーザーへの質問
-- **Header**: 短いラベル（12文字以内）
-- **Options**: 2〜4個の選択肢
-- **Multi Select**: 複数選択を許可するか
+**Configuration Items**:
+- **Question**: Question for the user
+- **Header**: Short label (within 12 characters)
+- **Options**: 2-4 choices
+- **Multi Select**: Allow multiple selections
 
-**使用例**：
-- 処理方法の選択
-- 優先度の設定
-- フォーマットの選択
+**Usage Examples**:
+- Selecting a processing method
+- Setting priorities
+- Choosing a format
 
-### Prompt ノード
+### Prompt Node
 
-再利用可能なプロンプトテンプレートを定義します。
+Defines reusable prompt templates.
 
-**設定項目**：
-- **Name**: プロンプトの名前
-- **Template**: テンプレート本文（`{{variable}}` で変数使用可能）
+**Configuration Items**:
+- **Name**: Prompt name
+- **Template**: Template body (use variables with `{{variable}}`)
 
-**使用例**：
-- コードレビューテンプレート
-- レポート生成テンプレート
-- 質問応答テンプレート
+**Usage Examples**:
+- Code review template
+- Report generation template
+- Question-answering template
 
-### Branch ノード
+### Branch Node
 
-条件に基づいて処理を分岐します。
+Branches processing based on conditions.
 
-**モード**：
-- **Conditional**: True/False の2方向分岐
-- **Switch**: 2〜N個の多方向分岐
+**Modes**:
+- **Conditional**: Two-way True/False branching
+- **Switch**: Multi-way branching with 2-N options
 
-**使用例**：
-- ファイルの存在チェック
-- エラーハンドリング
-- 処理結果による分岐
+**Usage Examples**:
+- File existence check
+- Error handling
+- Branching based on processing results
 
-## 実践例：データ分析ワークフロー
+## Practical Example: Data Analysis Workflow
 
-より実践的な例として、データ分析ワークフローを作成してみましょう：
+Let's create a data analysis workflow as a more practical example:
 
-### フロー構成
+### Flow Composition
 
 1. **Data Collector** (Sub-Agent)
-   - データファイルを収集
+   - Collect data files
    - Tools: Read, Glob
 
 2. **Choose Analysis** (AskUserQuestion)
-   - 統計分析 or 可視化を選択
+   - Select statistical analysis or visualization
 
 3. **Statistical Analyzer** (Sub-Agent)
-   - 統計分析を実行（統計分析選択時）
+   - Execute statistical analysis (when statistical analysis is selected)
 
 4. **Data Visualizer** (Sub-Agent)
-   - グラフを生成（可視化選択時）
+   - Generate graphs (when visualization is selected)
 
 5. **Report Generator** (Sub-Agent)
-   - 最終レポートを作成
+   - Create final report
    - Tools: Write
 
-### 作成手順
+### Creation Steps
 
-1. 各Sub-Agentノードを配置
-2. AskUserQuestionノードを配置
-3. ノードを接続：
+1. Place each Sub-Agent node
+2. Place AskUserQuestion node
+3. Connect nodes:
    - Data Collector → Choose Analysis
-   - Choose Analysis → Statistical Analyzer（統計分析選択時）
-   - Choose Analysis → Data Visualizer（可視化選択時）
+   - Choose Analysis → Statistical Analyzer (when statistical analysis selected)
+   - Choose Analysis → Data Visualizer (when visualization selected)
    - Statistical Analyzer → Report Generator
    - Data Visualizer → Report Generator
 
-4. ワークフロー名を入力：`data-analysis`
+4. Enter workflow name: `data-analysis`
 5. Save → Export
 
-これで `/data-analysis` コマンドで実行できます！
+Now you can run it with the `/data-analysis` command!
 
-## ワークフローの管理
+## Workflow Management
 
-### 保存したワークフローを読み込む
+### Loading a Saved Workflow
 
-1. ツールバーの **Load** ドロップダウンをクリック
-2. `.vscode/workflows/` 内のファイル一覧が表示されます
-3. 読み込みたいワークフローを選択
+1. Click the **Load** dropdown in the toolbar
+2. A list of files in `.vscode/workflows/` is displayed
+3. Select the workflow you want to load
 
-### ワークフローを更新する
+### Updating a Workflow
 
-1. ワークフローを読み込む
-2. ノードを編集
-3. 同じ名前で **Save** をクリック
-4. 上書き保存されます
+1. Load the workflow
+2. Edit nodes
+3. Click **Save** with the same name
+4. It will be overwritten
 
-### ワークフローをバージョン管理
+### Version Control for Workflows
 
-`.vscode/workflows/*.json` ファイルは Git で管理できます：
+`.vscode/workflows/*.json` files can be managed with Git:
 
 ```bash
 git add .vscode/workflows/
 git commit -m "Add code review workflow"
 ```
 
-チームメンバーと共有する場合も、このファイルをリポジトリに含めるだけです。
+To share with team members, simply include these files in the repository.
 
-## トラブルシューティング
+## Troubleshooting
 
-### ワークフローが保存できない
+### Cannot Save Workflow
 
-**原因**：ワークフロー名に使用できない文字が含まれている
+**Cause**: Workflow name contains invalid characters
 
-**解決方法**：
-- 英数字、ハイフン、アンダースコアのみ使用
-- スペースや特殊文字は避ける
+**Solution**:
+- Use only alphanumeric characters, hyphens, and underscores
+- Avoid spaces and special characters
 
-### エクスポートに失敗する
+### Export Fails
 
-**原因**：ノードの設定が不完全
+**Cause**: Incomplete node configuration
 
-**解決方法**：
-- すべてのノードに名前が設定されているか確認
-- 必須フィールドが入力されているか確認
-- エラーメッセージをVSCode通知で確認
+**Solution**:
+- Verify all nodes have names set
+- Check that required fields are filled in
+- Check error messages in VSCode notifications
 
-### ワークフローリストが更新されない
+### Workflow List Not Updating
 
-**解決方法**：
-- Load ドロップダウンの更新ボタン（↻）をクリック
-- エディタを閉じて再度開く
+**Solution**:
+- Click the refresh button (↻) in the Load dropdown
+- Close and reopen the editor
 
-### Claude Code でコマンドが認識されない
+### Command Not Recognized in Claude Code
 
-**原因**：エクスポート後、Claude Code を再起動していない
+**Cause**: Claude Code not restarted after export
 
-**解決方法**：
-- Claude Code を一度終了
-- 再度起動すると新しいコマンドが認識されます
+**Solution**:
+- Exit Claude Code once
+- Restart to recognize the new command
 
-## 次のステップ
+## Next Steps
 
-基本的な使い方を理解したら、実践的なユースケースを学びましょう：
+Once you understand the basics, learn practical use cases:
 
-1. [データ分析ワークフローの設計](/blog/003-usecase-data-analysis)
-2. [コードレビューワークフローの設計](/blog/004-usecase-code-review)
-3. [よくある質問と回答](/blog/005-faq)
+1. [Data Analysis Workflow Design](/blog/003-usecase-data-analysis)
+2. [Code Review Workflow Design](/blog/004-usecase-code-review)
+3. [Frequently Asked Questions](/blog/005-faq)
 
-## まとめ
+## Summary
 
-Claude Code Workflow Studioを使えば、プログラミング不要でClaude Codeのワークフローを視覚的に設計できます。
+Claude Code Workflow Studio lets you visually design Claude Code workflows with no programming required.
 
-**覚えておくべきポイント**：
-- ✅ ドラッグ&ドロップで直感的に設計
-- ✅ JSON形式で保存し、Gitで管理
-- ✅ エクスポートしてすぐにClaude Codeで実行
-- ✅ チームでワークフローを共有可能
+**Key Takeaways**:
+- ✅ Intuitive design with drag & drop
+- ✅ Save in JSON format and manage with Git
+- ✅ Export and run immediately in Claude Code
+- ✅ Share workflows with your team
 
-ぜひ様々なワークフローを試して、自分のプロジェクトに最適な自動化を見つけてください！
+Try various workflows and find the optimal automation for your project!

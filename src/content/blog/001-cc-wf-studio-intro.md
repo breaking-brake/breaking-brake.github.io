@@ -1,215 +1,215 @@
 ---
-title: "Claude Code Workflow Studio へようこそ"
-description: "Claude Codeのワークフローをビジュアルに設計できるVSCode拡張機能。ノーコードでドラッグ&ドロップ操作により、複雑なAIエージェントフローを直感的に構築できます。"
-pubDate: 2024-01-15
-author: "Claude Code Team"
+title: "Welcome to Claude Code Workflow Studio"
+description: "A VSCode extension that lets you design Claude Code workflows with a visual editor. Build complex AI agent flows intuitively with no-code drag & drop operations."
+pubDate: 2025-11-04
+author: "breaking-brake"
 ---
 
-## はじめに
+## Introduction
 
-Claude Code Workflow Studioへようこそ！この拡張機能は、AnthropicのClaude Codeで使用するワークフローを**ビジュアルに設計**できるVSCode拡張機能です。プログラミング不要で、ドラッグ&ドロップ操作だけで複雑なAIエージェントワークフローを構築できます。
+Welcome to Claude Code Workflow Studio! This extension is a VSCode tool that lets you **visually design** workflows for Anthropic's Claude Code. Build complex AI agent workflows with just drag-and-drop operations—no programming required.
 
-## Claude Code Workflow Studioとは
+## What is Claude Code Workflow Studio?
 
-### ビジュアルワークフローエディタ
+### Visual Workflow Editor
 
-Claude Code Workflow Studioは、Claude Codeのワークフローを視覚的にデザインするためのツールです。[Dify](https://dify.ai/)にインスパイアされた直感的なUIで、複雑なワークフローも簡単に構築できます。
+Claude Code Workflow Studio is a tool for visually designing Claude Code workflows. Inspired by [Dify](https://dify.ai/), its intuitive UI makes building even complex workflows simple.
 
-従来のClaude Codeでは、`.claude/agents/`や`.claude/commands/`といったマークダウンファイルを手動で作成する必要がありました。しかし、この拡張機能を使えば：
+Traditionally, Claude Code required manually creating markdown files in `.claude/agents/` or `.claude/commands/`. With this extension:
 
-- **ノーコード**: プログラミング知識不要
-- **ビジュアル**: ノードをドラッグ&ドロップで配置
-- **直感的**: フローを視覚的に理解しながら設計
-- **即実行**: エクスポートしたファイルをClaude Codeですぐに使用可能
+- **No-code**: No programming knowledge required
+- **Visual**: Place nodes with drag & drop
+- **Intuitive**: Design while visually understanding the flow
+- **Instant execution**: Exported files can be used immediately in Claude Code
 
-### なぜClaude Code Workflow Studioが必要なのか
+### Why Claude Code Workflow Studio?
 
-1. **学習コストの削減**: マークダウンの構文やフロントマターを覚える必要がありません
+1. **Reduced Learning Cost**: No need to memorize markdown syntax or frontmatter
 
-2. **設計の可視化**: ワークフロー全体を一目で把握でき、複雑なフローも理解しやすくなります
+2. **Design Visualization**: Grasp entire workflows at a glance and understand complex flows easily
 
-3. **素早い試行錯誤**: GUIで簡単に変更でき、何度でも試行錯誤が可能
+3. **Rapid Iteration**: Easy changes in the GUI enable unlimited trial and error
 
-4. **チーム共有**: JSON形式で保存されたワークフローは、チームメンバーと簡単に共有できます
+4. **Team Sharing**: Workflows saved in JSON format are easily shared with team members
 
-5. **プライバシー保護**: 完全オフライン動作で、ネットワーク通信は一切ありません
+5. **Privacy Protection**: Fully offline operation with no network communication
 
-## 主な機能
+## Key Features
 
-### 🎯 ビジュアルエディタ
+### 🎯 Visual Editor
 
-React Flowベースの洗練されたキャンバスで、ワークフローを視覚的に設計できます：
+Design workflows visually on a sophisticated React Flow-based canvas:
 
-- **ドラッグ&ドロップ**: 左パレットからノードをキャンバスに配置
-- **接続**: 出力ポート（右側）から入力ポート（左側）へドラッグして接続
-- **自動レイアウト**: ノードは自動的に整列し、見やすいフローを維持
-- **ズーム&パン**: マウスホイールやドラッグでキャンバスを自由に操作
+- **Drag & Drop**: Place nodes from the left palette onto the canvas
+- **Connections**: Drag from output port (right) to input port (left) to connect
+- **Auto Layout**: Nodes automatically align to maintain a clear flow
+- **Zoom & Pan**: Freely navigate the canvas with mouse wheel and drag
 
-### 🤖 Sub-Agentノード
+### 🤖 Sub-Agent Nodes
 
-Claude Code のSub-Agent（サブエージェント）を設定できます：
+Configure Claude Code Sub-Agents:
 
-- **カスタムプロンプト**: エージェントの振る舞いを詳細に定義
-- **ツール権限**: Read、Write、Bash など、使用可能なツールを選択
-- **モデル選択**:
-  - **Sonnet**: バランスの取れた性能（デフォルト）
-  - **Opus**: 複雑なタスク向け
-  - **Haiku**: 高速処理向け
+- **Custom Prompts**: Define agent behavior in detail
+- **Tool Permissions**: Select available tools like Read, Write, Bash
+- **Model Selection**:
+  - **Sonnet**: Balanced performance (default)
+  - **Opus**: For complex tasks
+  - **Haiku**: For fast processing
 
-### ❓ AskUserQuestionノード
+### ❓ AskUserQuestion Nodes
 
-ユーザーに選択肢を提示し、条件分岐を作成できます：
+Present choices to users and create conditional branches:
 
-- **2〜4個の選択肢**: 各選択肢から異なるノードへ分岐
-- **複数選択対応**: multiSelectオプションで複数回答も可能
-- **動的生成**: AIが文脈に応じて選択肢を生成
+- **2-4 Options**: Branch to different nodes from each choice
+- **Multi-select Support**: Multiple answers possible with multiSelect option
+- **Dynamic Generation**: AI generates options based on context
 
-### 🔀 Branchノード
+### 🔀 Branch Nodes
 
-条件に基づいて処理を分岐できます：
+Branch processing based on conditions:
 
-- **Conditional モード**: True/False の2方向分岐
-- **Switch モード**: 2〜N個の多方向分岐
-- **自然言語条件**: プログラミング不要で条件を記述
+- **Conditional Mode**: Two-way True/False branching
+- **Switch Mode**: Multi-way branching with 2-N options
+- **Natural Language Conditions**: Describe conditions without programming
 
-### 💬 Promptノード
+### 💬 Prompt Nodes
 
-再利用可能なプロンプトテンプレートを定義できます：
+Define reusable prompt templates:
 
-- **変数構文**: `{{variableName}}` で動的値を埋め込み
-- **変数検出**: 自動的に変数を認識しバリデーション
-- **実行時置換**: 実行時に動的に値を代入
+- **Variable Syntax**: Embed dynamic values with `{{variableName}}`
+- **Variable Detection**: Automatically recognize and validate variables
+- **Runtime Replacement**: Substitute values dynamically at execution
 
-### 💾 保存・読み込み機能
+### 💾 Save & Load
 
-ワークフローをJSON形式で管理できます：
+Manage workflows in JSON format:
 
-- **保存先**: `.vscode/workflows/` ディレクトリ
-- **バージョン管理**: Gitで履歴管理可能
-- **再利用**: 保存したワークフローを読み込んで編集
+- **Save Location**: `.vscode/workflows/` directory
+- **Version Control**: Manage history with Git
+- **Reuse**: Load saved workflows for editing
 
-### 📤 ワンクリックエクスポート
+### 📤 One-Click Export
 
-設計したワークフローを`.claude`ファイルとして出力：
+Output designed workflows as `.claude` files:
 
-- `.claude/agents/*.md` - Sub-Agent定義ファイル
-- `.claude/commands/*.md` - SlashCommandファイル
+- `.claude/agents/*.md` - Sub-Agent definition files
+- `.claude/commands/*.md` - SlashCommand files
 
-エクスポート後、すぐにClaude Codeで実行できます。
+After export, use immediately in Claude Code.
 
-### 🔒 安全なファイル処理
+### 🔒 Safe File Handling
 
-既存ファイルの保護機能：
+Protection for existing files:
 
-- **衝突検出**: 同名ファイルが存在する場合は警告
-- **確認ダイアログ**: 上書き前に必ず確認
-- **バックアップ推奨**: 重要なファイルは事前にバックアップ
+- **Collision Detection**: Warns if same-name file exists
+- **Confirmation Dialog**: Always confirms before overwriting
+- **Backup Recommended**: Back up important files beforehand
 
-### 🌐 多言語対応
+### 🌐 Multi-language Support
 
-VSCodeの表示言語設定（`vscode.env.language`）に自動対応：
+Automatically adapts to VSCode display language setting (`vscode.env.language`):
 
-- **対応言語**: 英語、日本語、韓国語、簡体字中国語、繁体字中国語
-- **UI**: ツールバー、ノードパレット、プロパティパネルすべて翻訳
-- **エクスポート**: 生成される`.claude`ファイルも自動翻訳
+- **Supported Languages**: English, Japanese, Korean, Simplified Chinese, Traditional Chinese
+- **UI**: Toolbar, node palette, property panel all translated
+- **Export**: Generated `.claude` files are also automatically translated
 
-## 使用技術
+## Technology Stack
 
 ### React Flow
 
-ビジュアルエディタのコア機能を提供する、業界標準のReactライブラリです。高度なノード操作とスムーズなユーザー体験を実現しています。
+An industry-standard React library providing core visual editor functionality. Enables advanced node manipulation and smooth user experience.
 
 ### VSCode Extension API
 
-VSCodeとシームレスに統合し、エディタ内で快適な開発体験を提供します。ファイルシステムへのアクセスや設定の読み書きもVSCode APIを通じて行います。
+Seamlessly integrates with VSCode to provide a comfortable development experience within the editor. File system access and settings management are handled through the VSCode API.
 
 ### TypeScript
 
-型安全性を重視し、すべてのコードをTypeScriptで記述しています。これにより、開発時のバグを早期に発見し、高品質な拡張機能を提供しています。
+All code is written in TypeScript with emphasis on type safety. This enables early bug detection during development and provides a high-quality extension.
 
 ### Webview UI
 
-VSCodeのWebview機能を使用し、モダンなWeb技術でリッチなUIを実現しています。React、CSS-in-JS、モジュールバンドラーを活用しています。
+Utilizes VSCode's Webview feature to realize a rich UI with modern web technologies. Leverages React, CSS-in-JS, and module bundlers.
 
-## アーキテクチャ
+## Architecture
 
-Claude Code Workflow Studioは、以下のコンポーネントで構成されています：
+Claude Code Workflow Studio consists of the following components:
 
-### 1. エディタUI（Webview）
+### 1. Editor UI (Webview)
 
-- **キャンバス**: React Flowベースのビジュアルエディタ
-- **ノードパレット**: 使用可能なノードタイプを表示
-- **プロパティパネル**: 選択中のノードの設定を編集
-- **ツールバー**: 保存、読み込み、エクスポート機能
+- **Canvas**: React Flow-based visual editor
+- **Node Palette**: Displays available node types
+- **Property Panel**: Edit settings for the selected node
+- **Toolbar**: Save, load, and export functions
 
-### 2. Extension Host（VSCode側）
+### 2. Extension Host (VSCode Side)
 
-- **コマンド登録**: VSCodeコマンドパレットとの統合
-- **ファイルI/O**: ワークフローの保存・読み込み、エクスポート処理
-- **メッセージング**: WebviewとExtension Hostの通信管理
+- **Command Registration**: Integration with VSCode command palette
+- **File I/O**: Workflow save/load and export processing
+- **Messaging**: Communication management between Webview and Extension Host
 
-### 3. ワークフロー定義
+### 3. Workflow Definition
 
-- **内部形式**: JSON形式でノードと接続を管理
-- **エクスポート形式**: Markdownフロントマター形式の`.claude`ファイル
+- **Internal Format**: Manage nodes and connections in JSON format
+- **Export Format**: `.claude` files in Markdown frontmatter format
 
-### 4. 国際化（i18n）
+### 4. Internationalization (i18n)
 
-- **言語検出**: VSCode設定から表示言語を取得
-- **翻訳マッピング**: UI文字列とエクスポートテンプレートの翻訳
-- **動的切替**: 言語変更時に自動的に再翻訳
+- **Language Detection**: Retrieve display language from VSCode settings
+- **Translation Mapping**: Translate UI strings and export templates
+- **Dynamic Switching**: Automatically retranslate on language change
 
-## 設計思想
+## Design Philosophy
 
-### オフラインファースト
+### Offline First
 
-すべての処理はローカルで完結します。ネットワーク通信は一切行わないため：
+All processing is completed locally. No network communication means:
 
-- **プライバシー保護**: コードや設定が外部に送信されることはありません
-- **高速**: ネットワーク遅延の影響を受けません
-- **信頼性**: インターネット接続が不要
+- **Privacy Protection**: Code and settings are never sent externally
+- **Speed**: Unaffected by network latency
+- **Reliability**: No internet connection required
 
-### ノーコード設計
+### No-Code Design
 
-プログラミング知識がなくても使えるよう、すべての操作をGUIで完結：
+All operations complete in the GUI, usable without programming knowledge:
 
-- **直感的操作**: マウスだけで完結
-- **即座のフィードバック**: 変更はリアルタイムで反映
-- **視覚的理解**: フロー全体を一目で把握
+- **Intuitive Operation**: Complete with mouse only
+- **Immediate Feedback**: Changes reflected in real-time
+- **Visual Understanding**: Grasp entire flow at a glance
 
-### 拡張性
+### Extensibility
 
-将来的な機能追加を見据えた設計：
+Designed with future feature additions in mind:
 
-- **プラグイン対応**: カスタムノードタイプの追加が可能
-- **テンプレート**: よく使うフローをテンプレート化
-- **インポート/エクスポート**: 他のツールとの連携
+- **Plugin Support**: Add custom node types
+- **Templates**: Templatize frequently used flows
+- **Import/Export**: Integration with other tools
 
-## ユースケース
+## Use Cases
 
-Claude Code Workflow Studioは、以下のようなシーンで活躍します：
+Claude Code Workflow Studio excels in scenarios like:
 
-- **複雑なワークフローの設計**: データ分析、コードレビュー、ドキュメント生成など
-- **プロトタイピング**: アイデアを素早く形にして試行錯誤
-- **チーム開発**: ワークフローをビジュアルに共有し、共通理解を促進
-- **学習**: Claude Codeの機能を視覚的に学習
+- **Complex Workflow Design**: Data analysis, code review, documentation generation, etc.
+- **Prototyping**: Quickly shape ideas and iterate
+- **Team Development**: Share workflows visually to promote common understanding
+- **Learning**: Visually learn Claude Code features
 
-## 今後の展開
+## Future Plans
 
-Claude Code Workflow Studioは継続的に進化していきます：
+Claude Code Workflow Studio will continue to evolve:
 
-- **新しいノードタイプ**: より多様なワークフローパターンに対応
-- **テンプレートライブラリ**: よく使うパターンを共有
-- **バージョン管理統合**: ワークフローの変更履歴を視覚化
-- **コラボレーション機能**: チームでのリアルタイム共同編集
-- **パフォーマンス最適化**: 大規模ワークフローのサポート
+- **New Node Types**: Support for more diverse workflow patterns
+- **Template Library**: Share commonly used patterns
+- **Version Control Integration**: Visualize workflow change history
+- **Collaboration Features**: Real-time collaborative editing for teams
+- **Performance Optimization**: Support for large-scale workflows
 
-## まとめ
+## Summary
 
-Claude Code Workflow Studioは、Claude Codeのワークフローをビジュアルに設計するためのVSCode拡張機能です。ノーコードでドラッグ&ドロップ操作により、誰でも簡単に複雑なAIエージェントワークフローを構築できます。
+Claude Code Workflow Studio is a VSCode extension for visually designing Claude Code workflows. Anyone can easily build complex AI agent workflows with no-code drag & drop operations.
 
-完全オフライン動作でプライバシーを保護しながら、直感的なUIで効率的なワークフロー設計を実現します。
+Fully offline operation protects privacy while an intuitive UI enables efficient workflow design.
 
-次のステップとして、[クイックスタートガイド](/blog/002-quick-start-tutorial)で実際の使い方を学びましょう！
+As a next step, learn how to use it in the [Quick Start Guide](/blog/002-quick-start-tutorial)!
 
-皆様のフィードバックをお待ちしております。一緒により良いワークフロー設計体験を創り上げていきましょう！
+We look forward to your feedback. Let's create a better workflow design experience together!

@@ -1,10 +1,6 @@
 ---
-// biome-ignore lint/correctness/noUnusedImports: Used as component in template below
-import Header from '../components/Header.astro'
-// biome-ignore lint/correctness/noUnusedImports: Used as component in template below
-import Footer from '../components/Footer.astro'
+import BaseLayout from './BaseLayout.astro'
 
-// biome-ignore lint/correctness/noUnusedVariables: Used by Astro for type checking
 interface Props {
   title: string
   description: string
@@ -22,227 +18,202 @@ const formattedDate = new Date(pubDate).toLocaleDateString('ja-JP', {
   day: 'numeric',
 })
 ---
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content={description}>
-    <title>{title}| Claude Code Workflow Studio</title>
-    <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<BaseLayout title={title} description={description}>
+  <style>
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
 
-    body {
-      font-family:
-        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
-        Cantarell, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      background-color: #f9f9f9;
-    }
+  .article-header {
+    background: var(--color-panel);
+    padding: 40px 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
+  .article-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--gray-12);
+    line-height: 1.2;
+  }
 
-    .article-header {
-      background: white;
-      padding: 40px 20px;
-      margin: 20px 0;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+  .article-meta {
+    display: flex;
+    gap: 20px;
+    color: var(--gray-11);
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+  }
 
+  .article-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+
+  .article-content {
+    background: var(--color-panel);
+    padding: 40px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* マークダウンコンテンツのスタイリング */
+  .article-content :global(h2) {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--gray-12);
+    border-bottom: 2px solid var(--gray-6);
+    padding-bottom: 0.5rem;
+  }
+
+  .article-content :global(h3) {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--gray-12);
+  }
+
+  .article-content :global(h4) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--gray-11);
+  }
+
+  .article-content :global(p) {
+    margin-bottom: 1.25rem;
+    line-height: 1.8;
+    color: var(--gray-12);
+  }
+
+  .article-content :global(ul),
+  .article-content :global(ol) {
+    margin-bottom: 1.25rem;
+    padding-left: 2rem;
+  }
+
+  .article-content :global(li) {
+    margin-bottom: 0.5rem;
+    color: var(--gray-12);
+  }
+
+  .article-content :global(code) {
+    background-color: var(--gray-3);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.9em;
+    color: #e83e8c;
+  }
+
+  .article-content :global(pre) {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1.25rem;
+  }
+
+  .article-content :global(pre code) {
+    background-color: transparent;
+    padding: 0;
+    color: inherit;
+    font-size: 0.95em;
+  }
+
+  .article-content :global(blockquote) {
+    border-left: 4px solid var(--brand-color);
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    color: var(--gray-11);
+    font-style: italic;
+  }
+
+  .article-content :global(a) {
+    color: var(--brand-color);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+
+  .article-content :global(a:hover) {
+    border-bottom-color: var(--brand-color);
+  }
+
+  .article-content :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+  }
+
+  .article-content :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+
+  .article-content :global(th),
+  .article-content :global(td) {
+    border: 1px solid var(--gray-6);
+    padding: 12px;
+    text-align: left;
+  }
+
+  .article-content :global(th) {
+    background-color: var(--gray-3);
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
     .article-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: #1a1a1a;
-      line-height: 1.2;
-    }
-
-    .article-meta {
-      display: flex;
-      gap: 20px;
-      color: #666;
-      font-size: 0.95rem;
-      margin-bottom: 15px;
-    }
-
-    .article-image {
-      width: 100%;
-      max-height: 400px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin: 20px 0;
+      font-size: 2rem;
     }
 
     .article-content {
-      background: white;
-      padding: 40px;
-      margin: 20px 0;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
     }
 
-    /* マークダウンコンテンツのスタイリング */
-    .article-content h2 {
-      font-size: 2rem;
-      font-weight: 600;
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      color: #1a1a1a;
-      border-bottom: 2px solid #e0e0e0;
-      padding-bottom: 0.5rem;
-    }
-
-    .article-content h3 {
+    .article-content :global(h2) {
       font-size: 1.5rem;
-      font-weight: 600;
-      margin-top: 1.5rem;
-      margin-bottom: 0.75rem;
-      color: #2a2a2a;
     }
 
-    .article-content h4 {
+    .article-content :global(h3) {
       font-size: 1.25rem;
-      font-weight: 600;
-      margin-top: 1.25rem;
-      margin-bottom: 0.5rem;
-      color: #3a3a3a;
     }
+  }
+  </style>
 
-    .article-content p {
-      margin-bottom: 1.25rem;
-      line-height: 1.8;
-    }
-
-    .article-content ul,
-    .article-content ol {
-      margin-bottom: 1.25rem;
-      padding-left: 2rem;
-    }
-
-    .article-content li {
-      margin-bottom: 0.5rem;
-    }
-
-    .article-content code {
-      background-color: #f5f5f5;
-      padding: 2px 6px;
-      border-radius: 3px;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.9em;
-      color: #e83e8c;
-    }
-
-    .article-content pre {
-      background-color: #2d2d2d;
-      color: #f8f8f2;
-      padding: 1.5rem;
-      border-radius: 8px;
-      overflow-x: auto;
-      margin-bottom: 1.25rem;
-    }
-
-    .article-content pre code {
-      background-color: transparent;
-      padding: 0;
-      color: inherit;
-      font-size: 0.95em;
-    }
-
-    .article-content blockquote {
-      border-left: 4px solid #4a90e2;
-      padding-left: 1.5rem;
-      margin: 1.5rem 0;
-      color: #666;
-      font-style: italic;
-    }
-
-    .article-content a {
-      color: #4a90e2;
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.3s;
-    }
-
-    .article-content a:hover {
-      border-bottom-color: #4a90e2;
-    }
-
-    .article-content img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-      margin: 1.5rem 0;
-    }
-
-    .article-content table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1.5rem 0;
-    }
-
-    .article-content th,
-    .article-content td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: left;
-    }
-
-    .article-content th {
-      background-color: #f5f5f5;
-      font-weight: 600;
-    }
-
-    @media (max-width: 768px) {
-      .article-title {
-        font-size: 2rem;
-      }
-
-      .article-content {
-        padding: 20px;
-      }
-
-      .article-content h2 {
-        font-size: 1.5rem;
-      }
-
-      .article-content h3 {
-        font-size: 1.25rem;
-      }
-    }
-    </style>
-  </head>
-  <body>
-    <header/>
-
-    <div class="container">
-      <article>
-        <div class="article-header">
-          <h1 class="article-title">{title}</h1>
-          <div class="article-meta">
-            <span>公開日: {formattedDate}</span>
-            <span>著者: {author}</span>
-          </div>
-          <p style="color: #666; font-size: 1.1rem;">{description}</p>
+  <div class="container">
+    <article>
+      <div class="article-header">
+        <h1 class="article-title">{title}</h1>
+        <div class="article-meta">
+          <span>公開日: {formattedDate}</span>
+          <span>著者: {author}</span>
         </div>
+        <p style="font-size: 1.1rem; color: var(--gray-11);">{description}</p>
+      </div>
 
-        {image && <img src={image} alt={title} class="article-image" />}
+      {image && <img src={image} alt={title} class="article-image" />}
 
-        <div class="article-content">
-          <slot/>
-        </div>
-      </article>
-    </div>
-
-    <footer/>
-  </body>
-</html>
+      <div class="article-content">
+        <slot/>
+      </div>
+    </article>
+  </div>
+</BaseLayout>

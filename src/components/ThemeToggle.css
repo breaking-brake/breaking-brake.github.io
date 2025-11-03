@@ -1,0 +1,39 @@
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--gray-6);
+  border-radius: 6px;
+  background: var(--color-panel);
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.theme-toggle:hover {
+  border-color: var(--brand-color);
+  background: var(--gray-3);
+}
+
+.theme-toggle[data-state="on"] {
+  background: var(--brand-color);
+  border-color: var(--brand-color);
+}
+
+.theme-toggle:focus-visible {
+  outline: none;
+  border-color: var(--brand-color);
+  box-shadow: 0 0 0 2px rgba(216, 127, 59, 0.1);
+}
+
+.theme-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--gray-12);
+}
+
+.theme-toggle[data-state="on"] .theme-icon {
+  color: white;
+}
