@@ -1,6 +1,7 @@
 ---
-import Layout from '../layouts/Layout.astro'
+// biome-ignore lint/correctness/noUnusedImports: Used as component in template below
 import Header from '../components/Header.astro'
+// biome-ignore lint/correctness/noUnusedImports: Used as component in template below
 import Footer from '../components/Footer.astro'
 import { getCollection } from 'astro:content'
 
@@ -10,6 +11,7 @@ const sortedPosts = allPosts.sort(
   (a, b) =>
     new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime(),
 )
+// biome-ignore lint/correctness/noUnusedVariables: Used in template below
 const recentPosts = sortedPosts.slice(0, 3)
 ---
 <!DOCTYPE html>

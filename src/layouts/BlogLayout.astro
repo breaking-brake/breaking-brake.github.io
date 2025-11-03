@@ -1,7 +1,10 @@
 ---
+// biome-ignore lint/correctness/noUnusedImports: Used as component in template below
 import Header from '../components/Header.astro'
+// biome-ignore lint/correctness/noUnusedImports: Used as component in template below
 import Footer from '../components/Footer.astro'
 
+// biome-ignore lint/correctness/noUnusedVariables: Used by Astro for type checking
 interface Props {
   title: string
   description: string
@@ -10,7 +13,9 @@ interface Props {
   image?: string
 }
 
+// biome-ignore lint/correctness/noUnusedVariables: All props used in template below
 const { title, description, pubDate, author, image } = Astro.props
+// biome-ignore lint/correctness/noUnusedVariables: Used in template below
 const formattedDate = new Date(pubDate).toLocaleDateString('ja-JP', {
   year: 'numeric',
   month: 'long',
