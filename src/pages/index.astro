@@ -1,0 +1,281 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { getCollection } from 'astro:content'
+
+// ブログ記事を取得し、公開日順にソート
+const allPosts = await getCollection('blog')
+const sortedPosts = allPosts.sort(
+  (a, b) =>
+    new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime(),
+)
+// biome-ignore lint/correctness/noUnusedVariables: Used in template below
+const recentPosts = sortedPosts.slice(0, 3)
+---
+<BaseLayout
+  title="Home"
+  description="An automation platform for development workflows powered by AI"
+>
+  <style>
+  .hero {
+    background:
+      linear-gradient(
+        135deg,
+        rgba(216, 127, 59, 0.3) 0%,
+        rgba(168, 93, 47, 0.3) 100%
+      ),
+      url("/hero-bg.png") center / cover no-repeat;
+    background-color: var(--brand-color);
+    color: white;
+    padding: 100px 20px;
+    text-align: center;
+    position: relative;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .hero p {
+    font-size: 1.25rem;
+    margin-bottom: 30px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-button {
+    display: inline-block;
+    background: white;
+    color: var(--brand-color);
+    padding: 15px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition:
+      transform 0.3s,
+      box-shadow 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .section {
+    padding: 80px 20px;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 50px;
+    color: var(--gray-12);
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+  }
+
+  .feature-card {
+    background: var(--color-panel);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--brand-color);
+  }
+
+  .feature-card p {
+    color: var(--gray-11);
+    line-height: 1.7;
+  }
+
+  .blog-posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+  }
+
+  .blog-card {
+    background: var(--color-panel);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition:
+      transform 0.3s,
+      box-shadow 0.3s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .blog-card-content {
+    padding: 25px;
+  }
+
+  .blog-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--gray-12);
+  }
+
+  .blog-card p {
+    color: var(--gray-11);
+    margin-bottom: 15px;
+    line-height: 1.6;
+  }
+
+  .blog-card-meta {
+    font-size: 0.9rem;
+    color: var(--gray-10);
+  }
+
+  .section-bg {
+    background-color: var(--gray-2);
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2rem;
+    }
+
+    .hero p {
+      font-size: 1rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+    }
+  }
+  </style>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Claude Code Workflow Studio</h1>
+      <p>
+        A VSCode extension that lets you design Claude Code workflows with a
+        visual editor
+        <br>
+        Build complex AI agent flows intuitively with no-code drag & drop
+        operations
+      </p>
+      <div
+        style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 30px;"
+      >
+        <a href="/get-started" class="cta-button">Get Started</a>
+        <a
+          href="/blog"
+          class="cta-button"
+          style="background: transparent; color: white; border: 2px solid white;"
+          >Documentation</a
+        >
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Key Features</h2>
+      <div class="features">
+        <div class="feature-card">
+          <h3>🎯 Visual Editor</h3>
+          <p>
+            Design workflows visually on a sophisticated React Flow-based
+            canvas. Operate intuitively with drag & drop, and grasp complex
+            flows at a glance.
+          </p>
+        </div>
+        <div class="feature-card">
+          <h3>🤖 Two Types of Prompt Instructions</h3>
+          <p>
+            Define reusable prompt templates with Prompts nodes, and direct
+            agent execution with Sub-Agent nodes. Configure custom prompts, tool
+            permissions, and model selection (Sonnet/Opus/Haiku) in detail.
+          </p>
+        </div>
+        <div class="feature-card">
+          <h3>🔀 Conditional Branch Nodes</h3>
+          <p>
+            Present options with AskUserQuestion nodes, create conditional
+            branches with Branch nodes. Describe conditions in natural
+            language—no programming knowledge required.
+          </p>
+        </div>
+        <div class="feature-card">
+          <h3>💾 Save & Export</h3>
+          <p>
+            Save workflows in JSON format and manage with Git. Export designed
+            workflows as .claude files and execute them immediately.
+          </p>
+        </div>
+        <div class="feature-card">
+          <h3>🔒 Fully Offline</h3>
+          <p>
+            Prioritizes privacy protection with fully offline operation. No
+            network communication—all data is stored locally.
+          </p>
+        </div>
+        <div class="feature-card">
+          <h3>💡 Reusability</h3>
+          <p>
+            Define reusable templates with Prompt nodes. Embed dynamic values
+            with variable syntax and build workflows efficiently.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-bg">
+    <div class="container">
+      <h2 class="section-title">Latest Articles</h2>
+      <div class="blog-posts">
+        {recentPosts.map((post) => (
+      <a href={`/blog/${post.slug}`} class="blog-card">
+        <div class="blog-card-content">
+          <h3>{post.data.title}</h3>
+          <p>{post.data.description}</p>
+          <div class="blog-card-meta">
+            {new Date(post.data.pubDate).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
+          </div>
+        </div>
+      </a>
+    ))}
+      </div>
+      {sortedPosts.length > 3 && (
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="/blog" class="cta-button" style="background: var(--brand-color); color: white;">
+        View All Articles
+      </a>
+    </div>
+  )}
+    </div>
+  </section>
+</BaseLayout>

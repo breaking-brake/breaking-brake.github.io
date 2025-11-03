@@ -1,14 +1,115 @@
 ---
-layout: null
+import { ThemeToggle } from './ThemeToggle'
+import { MobileMenuToggle } from './MobileMenuToggle'
 ---
+<header class="site-header">
+  <div class="header-container">
+    <a href="/" class="site-title">
+      <img src="/logo.png" alt="Claude Code Workflow Studio Logo" class="site-logo" />
+      <span>Claude Code Workflow Studio</span>
+    </a>
 
-<header>
-  <nav>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/about">About</a></li>
-      <li><a href="/services">Services</a></li>
-      <li><a href="/contact">Contact</a></li>
-    </ul>
-  </nav>
+    <nav class="header-nav">
+      <a href="/">Home</a>
+      <a href="/get-started">Get Started</a>
+      <a href="/about">About</a>
+      <a href="https://github.com/breaking-brake/cc-wf-studio" target="_blank"
+        >GitHub</a
+      >
+
+      <ThemeToggle client:load/>
+
+      <div class="mobile-menu-toggle-wrapper">
+        <MobileMenuToggle client:load />
+      </div>
+    </nav>
+  </div>
 </header>
+
+<style>
+.site-header {
+  border-bottom: 1px solid var(--gray-6);
+  background: color-mix(in srgb, var(--color-panel) 80%, transparent);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.site-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gray-12);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mobile-menu-toggle-wrapper {
+  display: none;
+}
+
+.site-logo {
+  height: 2rem;
+  width: auto;
+  object-fit: contain;
+}
+
+.site-title:hover {
+  color: var(--brand-color);
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header-nav a {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--gray-12);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.header-nav a:hover {
+  color: var(--brand-color);
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    background: var(--color-panel);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .site-title {
+    font-size: 1rem;
+  }
+
+  .site-logo {
+    height: 1.5rem;
+  }
+
+  .header-nav a {
+    display: none;
+  }
+
+  .mobile-menu-toggle-wrapper {
+    display: block;
+  }
+}
+</style>

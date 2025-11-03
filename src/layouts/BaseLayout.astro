@@ -1,0 +1,148 @@
+---
+// biome-ignore lint/correctness/noUnusedImports: React component used in template below
+import { RadixThemeProvider } from '../components/RadixThemeProvider'
+import Header from '../components/Header.astro'
+// biome-ignore lint/correctness/noUnusedImports: React component used in template below
+import { LayoutWrapper } from '../components/LayoutWrapper'
+
+interface Props {
+  title: string
+  description: string
+  image?: string
+}
+
+// biome-ignore lint/correctness/noUnusedVariables: Used in template below
+const { title, description, image } = Astro.props
+// biome-ignore lint/correctness/noUnusedVariables: Used in template below
+const currentPath = Astro.url.pathname
+
+const siteUrl = 'https://breaking-brake.github.io'
+const canonicalURL = new URL(currentPath, siteUrl)
+const ogImage = image || `${siteUrl}/hero-bg.png`
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content={description}>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="canonical" href={canonicalURL}>
+    <title>{title} | Claude Code Workflow Studio</title>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content={canonicalURL}>
+    <meta
+      property="og:title"
+      content={`${title} | Claude Code Workflow Studio`}
+    >
+    <meta property="og:description" content={description}>
+    <meta property="og:image" content={ogImage}>
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content={canonicalURL}>
+    <meta
+      property="twitter:title"
+      content={`${title} | Claude Code Workflow Studio`}
+    >
+    <meta property="twitter:description" content={description}>
+    <meta property="twitter:image" content={ogImage}>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Claude Code Workflow Studio",
+        "description": "A VSCode extension that lets you design Claude Code workflows with a visual editor",
+        "url": "https://breaking-brake.github.io",
+        "image": "https://breaking-brake.github.io/hero-bg.png",
+        "author": {
+          "@type": "Organization",
+          "name": "breaking-brake"
+        }
+      }
+    </script>
+
+    <script is:inline>
+    // ページ描画前にテーマを適用してチカチカを防止
+    ;(function () {
+      const savedTheme = localStorage.getItem('theme') || 'inherit'
+      const root = document.documentElement
+
+      root.setAttribute('data-accent-color', 'violet')
+      root.setAttribute('data-gray-color', 'slate')
+      root.setAttribute('data-radius', 'medium')
+      root.setAttribute('data-scaling', '100%')
+      root.setAttribute('data-is-root-theme', 'true')
+
+      if (savedTheme === 'light') {
+        root.setAttribute('class', 'radix-themes light')
+      } else if (savedTheme === 'dark') {
+        root.setAttribute('class', 'radix-themes dark')
+      } else {
+        root.setAttribute('class', 'radix-themes')
+      }
+    })()
+    </script>
+    <style>
+    :root {
+      --brand-color: #d87f3b;
+      --brand-color-dark: #a85d2f;
+      --header-height: 70px;
+    }
+
+    @media (max-width: 768px) {
+      :root {
+        --header-height: 120px;
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+      line-height: 1.6;
+      color: var(--gray-12);
+      background-color: var(--color-background);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    :global(.layout-wrapper) {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    :global(.content-wrapper) {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    @media (max-width: 768px) {
+      :global(.layout-wrapper) {
+        flex-direction: column;
+      }
+    }
+    </style>
+  </head>
+  <body>
+    <Header />
+
+    <RadixThemeProvider client:load>
+      <LayoutWrapper currentPath={currentPath} client:load>
+        <slot />
+      </LayoutWrapper>
+    </RadixThemeProvider>
+  </body>
+</html>
