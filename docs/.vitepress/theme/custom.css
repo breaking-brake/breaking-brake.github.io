@@ -1,0 +1,19 @@
+.VPHero.has-image .image-container {
+  width: auto;
+  height: auto;
+  max-width: 880px;
+  transform: none;
+}
+
+.VPHero.has-image .image-bg {
+  display: none;
+}
+
+.VPHero.has-image .image-src {
+  position: static;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: none;
+  transform: none;
+}
